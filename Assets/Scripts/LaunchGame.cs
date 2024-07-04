@@ -8,49 +8,43 @@ namespace DefaultNamespace
     public class LaunchGame : MonoBehaviour
     {
         private const string SteamRunGamePath = "steam://rungameid/248970";
-        [MenuItem("Vectorier/Run Game %#&R")]
-        public static void Run()
+
+
+
+
+
+
+        static LaunchGame()
+        {
+            BuildMap.MapBuilt += OnMapBuilt;
+        }
+        private static void OnMapBuilt()
         {
 
+            var gameExecutablePath = VectorierSettings.GameExecutablePath ?? SteamRunGamePath;
 
-            string gameProcessPath = "";
+            try
+            {
+                var gameProcess = new Process();
+                gameProcess.StartInfo.FileName = gameExecutablePath;
+                gameProcess.Start();
 
-
-
-                var gamePath = VectorierSettings.GameDirectory;
-                var gameExecutablePath = VectorierSettings.GameExecutablePath;
-                if (string.IsNullOrEmpty(gamePath) && string.IsNullOrEmpty(gameExecutablePath))
-                {
-                    Debug.LogWarning("Game executable path is empty; defaulting to the \"steam://rungameid/248970\" path");
-                    Debug.LogWarning("Please sett at least the GameDirectory in the Vectorier settings");
-                    gameProcessPath = SteamRunGamePath;
-                }
-                else
-                {
-                    if(!string.IsNullOrEmpty(gamePath) && string.IsNullOrEmpty(gameExecutablePath))
-                    {
-                        gameProcessPath = VectorierSettings.GenerateGameExecutablePath();
-                    }
-                    else
-                    {
-                        gameProcessPath = gameExecutablePath;
-                    }
-
-                }
+                gameProcess.WaitForExit();
+            }
+            catch (Win32Exception) // This exception is thrown when the game executable is not found.
+            {
+                Debug.LogError($"Cannot find game executable at path: {VectorierSettings.GameDirectory}!");
+            }
+        }
 
 
-                try
-                {
-                    var gameProcess = new Process();
-                    gameProcess.StartInfo.FileName = gameProcessPath;
-                    gameProcess.Start();
 
-                    gameProcess.WaitForExit();
-                }
-                catch (Win32Exception) // This exception is thrown when the game executable is not found.
-                {
-                    Debug.LogError($"Cannot find game executable at path: {gamePath}!");
-                }
+        [MenuItem("Vectorier/Build and Run Game %#&R")]
+        public static void BuildAndRun()
+        {
+            BuildMap.Build();
+
+
 
         }
     }

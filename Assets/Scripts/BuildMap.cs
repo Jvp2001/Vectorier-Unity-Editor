@@ -60,6 +60,7 @@ public class BuildMap : MonoBehaviour
     public bool debugObjectWriting;
     public bool hunterPlaced;
 
+    public static event Action MapBuilt;
 
     [MenuItem("Vectorier/BuildMap %#&B")]
     public static void Build()
@@ -1633,7 +1634,20 @@ public class BuildMap : MonoBehaviour
         }
 
         // Start compressing levels into level_xml.dz
-        Process dzipProcess = Process.Start(Application.dataPath + "/XML/dzip/dzip.exe", Application.dataPath + "/XML/dzip/config-map.dcl");
+        Process dzipProcess = new Process
+        {
+            StartInfo =
+            {
+                FileName = Application.dataPath + "/XML/dzip/dzip.exe",
+                Arguments = Application.dataPath + "/XML/dzip/config-map.dcl"
+
+            },
+
+            EnableRaisingEvents = true
+        };
+        dzipProcess.Exited += (sender, args) => MapBuilt?.Invoke();
+        dzipProcess.Start();
+
         if (dzipProcess != null)
         {
             dzipProcess.WaitForExit();

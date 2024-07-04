@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 public class VectorierSettingsProvider : SettingsProvider
 {
 
-    private const string GameExecutableToolTip = "If this is not set, then the \"Run Game Command\" will usee the GameDirectory property with the game executable name appended to it.";
+    private const string GameExecutableToolTip = "If this field is empty, then it will use the Steam run game path (steam://rungameid/248970).";
 
     public VectorierSettingsProvider(string path, SettingsScope scopes, IEnumerable<string>? keywords = null) : base(path, scopes, keywords)
     {
