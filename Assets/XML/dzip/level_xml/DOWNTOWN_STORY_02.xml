@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Sets>
+    <City FileName="buildings.xml" />
+    <City FileName="buildings_downtown.xml" />
+    <Ground FileName="objects.xml" />
+  </Sets>
+  <Music Name="music_dinamic" Volume="0.3" />
+  <Models Choice="AITriggers" Variant="CommonMode">
+    <Model Name="Player" Type="1" Color="0" BirthSpawn="PlayerSpawn" AI="0" Time="0" Respawns="Hunter" ForceBlasts="Hunter" Trick="1" Item="1" Victory="1" Lose="1" Skins="1" />
+    <Model Name="Hunter" Type="0" Color="0" BirthSpawn="DefaultSpawn" AI="1" Time="0" AllowedSpawns="Respawn" Murders="Player" Arrests="Player" Icon="1" Skins="hunter" />
+  </Models>
+  <Models Choice="AITriggers" Variant="HunterMode">
+    <Model Name="Player" Type="0" Color="0" BirthSpawn="DefaultSpawn" AI="5" Time="0" Victory="1" Respawns="Hunter" />
+    <Model Name="Hunter" Type="1" Color="0" BirthSpawn="DefaultSpawn" AI="0" Time="1.5" Trick="1" Item="1" Skins="hunter" Murders="Player" Arrests="Player" Lose="1" AllowedSpawns="Despawn" />
+  </Models>
+  <Coins Value="40" />
+  <Objects Name="Money" />
+  <Track>
+    <Object Factor="0.05">
+      <Content>
+        <Image X="-500" Y="-500" ClassName="v_bg" Width="2121" Height="1116" />
+        <Image X="1620" Y="-500" ClassName="v_bg" Width="2121" Height="1116" />
+        <Image X="3740" Y="-500" ClassName="v_bg" Width="2121" Height="1116" />
+      </Content>
+    </Object>
+    <Object Factor="0.5">
+      <Content>
+        <Image X="991.9996" Y="-912.0001" ClassName="v_building_3" Width="1159.168" Height="2318.336" NativeX="512" NativeY="1024" />
+        <Image X="2840" Y="-1200" ClassName="v_building_2" Width="988.9609" Height="1977.922" NativeX="512" NativeY="1024" />
+      </Content>
+    </Object>
+    <Object Factor="1">
+      <Content>
+        <Spawn X="-220" Y="0" Name="DefaultSpawn" Animation="JumpOff|18" />
+        <Spawn X="228" Y="11" Name="PlayerSpawn" Animation="JumpOff|18" />
+        <Image X="6592.642" Y="-479.8535" ClassName="v_office_lightened_piece" Width="795" Height="430" NativeX="795" NativeY="430" />
+        <Image X="7382.643" Y="-479.8535" ClassName="v_office_pattern" Width="795" Height="430" NativeX="795" NativeY="430" />
+        <Image X="8172.643" Y="-479.8535" ClassName="v_office_pattern" Width="795" Height="430" NativeX="795" NativeY="430" />
+        <Image X="-267.3576" Y="-209.8535" ClassName="partyroof" Width="1635" Height="385" NativeX="1635" NativeY="385" />
+        <Image X="1952.642" Y="20.14654" ClassName="ventilation_holes_roof" Width="643" Height="150" NativeX="643" NativeY="150" />
+        <Image X="1852.642" Y="0.146544" ClassName="v_venthole_1_1" Width="127" Height="173" NativeX="127" NativeY="173" />
+        <Image X="2572.643" Y="0.146544" ClassName="v_venthole_1_1" Width="127" Height="173" NativeX="127" NativeY="173" />
+        <Image X="4132.643" Y="-439.8535" ClassName="v_muorny_tank_2_1" Width="198" Height="125" NativeX="198" NativeY="125" />
+        <Image X="4352.643" Y="-409.8535" ClassName="v_muorny_tank_1_1" Width="86" Height="91" NativeX="86" NativeY="91" />
+        <Image X="4549.629" Y="-409.8535" ClassName="v_fan_1_1" Width="200" Height="91" NativeX="200" NativeY="91" />
+        <Image X="7209.882" Y="-320" ClassName="office_door" Width="182" Height="262.9376" NativeX="182" NativeY="256" />
+        <Image X="7482.643" Y="-190" ClassName="office_printer" Width="101" Height="131.0848" NativeX="101" NativeY="128" />
+        <Image X="-387.3575" Y="168.6965" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="32.64244" Y="168.6965" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="452.6425" Y="168.6965" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="-507.3576" Y="168.6965" ClassName="v_CornerUp_L_02" Width="128" Height="129.4464" NativeX="128" NativeY="128" />
+        <Image X="-507.3576" Y="290.1465" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="-507.3576" Y="710.1465" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="-507.3576" Y="1110.146" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="-388.1076" Y="290.1465" ClassName="v_black" Width="1699.706" Height="1232.813" NativeX="50" NativeY="50" />
+        <Image X="1302.642" Y="168.3865" ClassName="v_CornerUp_R_03" Width="128" Height="129.7664" NativeX="128" NativeY="128" />
+        <Image X="871.9301" Y="168.6965" ClassName="v_LongFloor_03" Width="437.7177" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="1972.643" Y="168.6965" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="1852.642" Y="290.1465" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="1852.642" Y="710.1465" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="1852.642" Y="1130.147" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="2372.643" Y="168.6965" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="1962.642" Y="290.1465" ClassName="v_black" Width="1699.706" Height="1232.813" NativeX="50" NativeY="50" />
+        <Image X="1302.642" Y="290.1465" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="1302.642" Y="700.1465" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="1302.642" Y="1110.146" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="2772.643" Y="168.6965" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="3184.2" Y="168.6965" ClassName="v_LongFloor_03" Width="475.4645" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="3772.643" Y="-319.8535" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="4192.643" Y="-319.8535" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="4612.643" Y="-319.8535" ClassName="v_CornerUp_R_03" Width="128" Height="129.7664" NativeX="128" NativeY="128" />
+        <Image X="4612.643" Y="-199.8535" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="4612.643" Y="210.1466" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="4612.643" Y="630.1465" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="4612.643" Y="1020.147" ClassName="v_LongCornerUp_R_03" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="3650.4" Y="-218.4067" ClassName="v_black" Width="1075.757" Height="1741.348" NativeX="50" NativeY="50" />
+        <Image X="2689.533" Y="-98.55991" ClassName="v_rail_left" Width="391" Height="256" NativeX="391" NativeY="256" />
+        <Image X="3282.642" Y="-389.8535" ClassName="v_rail_longleft" Width="790" Height="256" NativeX="790" NativeY="256" />
+        <Image X="5402.643" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="5822.643" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="6242.643" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="6662.642" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="7082.643" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="7492.642" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="5282.643" Y="60.14655" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="5282.643" Y="460.1465" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="5282.643" Y="880.1466" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="5282.643" Y="1280.147" ClassName="v_LongCornerUp_L_02" Width="128" Height="427" NativeX="128" NativeY="427" />
+        <Image X="5392.643" Y="40.14333" ClassName="v_black" Width="3255.957" Height="1670.584" NativeX="50" NativeY="50" />
+        <Image X="6592.71" Y="-1836.19" ClassName="v_black" Width="2093.194" Height="1360.624" NativeX="50" NativeY="50" />
+        <Image X="7882.643" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="8252.643" Y="-59.85346" ClassName="v_LongFloor_03" Width="427" Height="129.4464" NativeX="427" NativeY="128" />
+        <Image X="6592.71" Y="-570.71" ClassName="v_black" Width="67.02623" Height="216.7919" NativeX="50" NativeY="50" />
+        <Image X="1852.642" Y="168.6965" ClassName="v_CornerUp_L_02" Width="128" Height="129.4464" NativeX="128" NativeY="128" />
+        <Image X="3652.642" Y="-319.8535" ClassName="v_CornerUp_L_02" Width="128" Height="129.4464" NativeX="128" NativeY="128" />
+        <Image X="5282.643" Y="-59.85346" ClassName="v_CornerUp_L_02" Width="128" Height="129.4464" NativeX="128" NativeY="128" />
+        <Object Name="HunterStop" X="8738.81" Y="-61.45439" />
+        <Object Name="DoubleConditionerT" X="7908.45" Y="-154.559" />
+        <Object Name="DoubleConditioner" X="7908.45" Y="-154.559" />
+        <Object Name="TriggerVictory" X="8872.889" Y="-357.5438" />
+        <Camera X="870" Y="-30" />
+        <Object Name="TriggerJump" X="1330" Y="-40.00003" />
+        <Object Name="TriggerJump" X="4630" Y="-520" />
+        <Object Name="SlopeUp" X="2660" Y="180" />
+        <Object Name="TriggerCameraStart" X="520" Y="-240" />
+        <Object Name="TriggerZoom80" X="1330" Y="-1670" />
+        <Object Name="TriggerZoomNormal" X="4630" Y="-2290" />
+        <Object Name="TriggerZoomMin" X="3190" Y="-2060" />
+        <Object Name="TriggerLoss" X="1100" Y="560" />
+        <Object Name="TriggerLoss" X="4470" Y="310" />
+        <Platform X="-510" Y="170" Width="1939.002" Height="1338.763" />
+        <Platform X="1860" Y="170" Width="1807.915" Height="1338.763" />
+        <Platform X="3660" Y="-320" Width="1076.21" Height="1825.136" />
+        <Platform X="5280" Y="-60" Width="6090.486" Height="1775.675" />
+      </Content>
+    </Object>
+    <Object Factor="1.001">
+      <Content>
+      </Content>
+    </Object>
+  </Track>
+</Root>
