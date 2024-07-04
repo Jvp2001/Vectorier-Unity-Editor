@@ -9,26 +9,39 @@ namespace DefaultNamespace
     {
         private const string SteamRunGamePath = "steam://rungameid/248970";
 
-
-
-
-
+        // This prevents the game from running after just building the map.
+        private static bool shouldLaunchGame;
 
         static LaunchGame()
         {
             BuildMap.MapBuilt += OnMapBuilt;
         }
+
+
         private static void OnMapBuilt()
         {
+            RunGame();
+        }
 
+        [MenuItem("Vectorier/Run Game %#R")]
+        private static void RunGame()
+        {
+
+            if (!shouldLaunchGame)
+                return;
             var gameExecutablePath = VectorierSettings.GameExecutablePath ?? SteamRunGamePath;
 
             try
             {
-                var gameProcess = new Process();
-                gameProcess.StartInfo.FileName = gameExecutablePath;
-                gameProcess.Start();
+                var gameProcess = new Process
+                {
+                    StartInfo =
+                    {
+                        FileName = gameExecutablePath
+                    }
+                };
 
+                gameProcess.Start();
                 gameProcess.WaitForExit();
             }
             catch (Win32Exception) // This exception is thrown when the game executable is not found.
@@ -42,6 +55,7 @@ namespace DefaultNamespace
         [MenuItem("Vectorier/Build and Run Game %#&R")]
         public static void BuildAndRun()
         {
+            shouldLaunchGame = true;
             BuildMap.Build();
 
 

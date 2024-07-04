@@ -7,6 +7,7 @@ using System.Xml;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 public class BuildMap : MonoBehaviour
 {
@@ -17,8 +18,12 @@ public class BuildMap : MonoBehaviour
 
     // Level Settings
     [Header("Level Settings")]
-    [Tooltip("Level that will get overridden.")] public string mapToOverride = "DOWNTOWN_STORY_02";
-    [Tooltip("Music that will be played on the level.")] public string levelMusic = "music_dinamic";
+    [Tooltip("Level that will get overridden.")]
+    public string mapToOverride = "DOWNTOWN_STORY_02";
+
+    [Tooltip("Music that will be played on the level.")]
+    public string levelMusic = "music_dinamic";
+
     [Tooltip("Volume of the music.")] public string MusicVolume = "0.3";
     [Tooltip("Background Image")] public string customBackground = "v_bg";
     [Tooltip("Background Width")] public string bg_Width = "2121";
@@ -30,34 +35,52 @@ public class BuildMap : MonoBehaviour
     {
         public string playerModelName = "Player";
         [Tooltip("Player's Spawn Name")] public string playerSpawnName = "PlayerSpawn";
-        [Tooltip("Duration until the player appears.")] public float playerSpawnTime;
-        [Tooltip("Player Appearance (Default: 1)")] public string playerSkin = "1";
+
+        [Tooltip("Duration until the player appears.")]
+        public float playerSpawnTime;
+
+        [Tooltip("Player Appearance (Default: 1)")]
+        public string playerSkin = "1";
     }
     [Serializable]
     public class HunterSettings
     {
         public string hunterModelName = "Hunter";
         [Tooltip("Hunter's Spawn Name")] public string hunterSpawnName = "DefaultSpawn";
-        [Tooltip("Time it takes for the hunter to spawn in.")] public float hunterSpawnTime;
+
+        [Tooltip("Time it takes for the hunter to spawn in.")]
+        public float hunterSpawnTime;
+
         [Tooltip("Hunter Respawn Name")] public string hunterAllowedSpawn = "Respawn";
-        [Tooltip("Hunter Appearance (Default: hunter)")] public string hunterSkin = "hunter";
-        [Tooltip("Hunter is able do to tricks")] public bool hunterTrickAllowed;
+
+        [Tooltip("Hunter Appearance (Default: hunter)")]
+        public string hunterSkin = "hunter";
+
+        [Tooltip("Hunter is able do to tricks")]
+        public bool hunterTrickAllowed;
+
         [Tooltip("Shows hunter icon or not")] public bool hunterIcon = true;
         [Tooltip("Ai Number (Default: 1)")] public int hunterAIType = 1;
     }
+
     [Header("Gameplay")]
     [SerializeField] private PlayerSettings Player;
+
     [SerializeField] private HunterSettings Hunter;
-    [Tooltip("Uses custom properties instead of prefixed (Will ignore the settings for player and hunter above.)")] public bool useCustomProperties;
+
+    [Tooltip("Uses custom properties instead of prefixed (Will ignore the settings for player and hunter above.)")]
+    public bool useCustomProperties;
 
     [TextArea(5, 20)]
-    public string CustomModelProperties = @"<Model Name=""Player"" Type=""1"" Color=""0"" BirthSpawn=""PlayerSpawn"" AI=""0"" Time=""0"" Respawns=""Hunter"" ForceBlasts=""Hunter"" Trick=""1"" Item=""1"" Victory=""1"" Lose=""1""/>
+    public string CustomModelProperties =
+        @"<Model Name=""Player"" Type=""1"" Color=""0"" BirthSpawn=""PlayerSpawn"" AI=""0"" Time=""0"" Respawns=""Hunter"" ForceBlasts=""Hunter"" Trick=""1"" Item=""1"" Victory=""1"" Lose=""1""/>
     <Model Name=""Hunter"" Type=""0"" Color=""0"" BirthSpawn=""DefaultSpawn"" AI=""1"" Time=""0.8"" AllowedSpawns=""Respawn"" Skins=""hunter"" Murders=""Player"" Arrests=""Player"" Icon=""1""/>";
 
 
     // Miscellaneous
     [Header("Miscellaneous")]
     public bool debugObjectWriting;
+
     public bool hunterPlaced;
 
     public static event Action MapBuilt;
@@ -67,6 +90,9 @@ public class BuildMap : MonoBehaviour
     {
         //This is used to cache the BuildMap component. This is done to avoid the FindObjectOfType method in loop and other places. This is a slow operation.
         var buildMap = FindObjectOfType<BuildMap>();
+#if UNITY_EDITOR
+        UnityEditor.SceneManagement.EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
+#endif
         if (string.IsNullOrEmpty(buildMap.vectorFilePath))
         {
             buildMap.vectorFilePath = VectorierSettings.GameDirectory;
@@ -92,8 +118,8 @@ public class BuildMap : MonoBehaviour
 
                 // Get all GameObjects with tag "Image", then arrange them based on sorting order
                 GameObject[] imagesInScene = GameObject.FindGameObjectsWithTag("Image")
-                                            .OrderBy(obj => obj.GetComponent<SpriteRenderer>().sortingOrder)
-                                            .ToArray();
+                    .OrderBy(obj => obj.GetComponent<SpriteRenderer>().sortingOrder)
+                    .ToArray();
 
                 //Write every GameObject with tag "Object", "Image", "Platform", "Area" and "Trigger" in the build-map.xml
                 foreach (GameObject spawnInScene in GameObject.FindGameObjectsWithTag("Spawn"))
@@ -215,7 +241,7 @@ public class BuildMap : MonoBehaviour
             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Image Size in Width and Height
             {
 
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = frontimageInScene.transform.localScale; // Get the GameObject scale
 
                 // Retrieve the image resolution of the sprite
@@ -239,7 +265,7 @@ public class BuildMap : MonoBehaviour
             // Check if the sprite image is flipped x,y or both
             if (spriteRenderer.flipX || spriteRenderer.flipY || (spriteRenderer.flipX && spriteRenderer.flipY))
             {
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = frontimageInScene.transform.localScale; // Get the GameObject scale
 
                 float width = bounds.size.x * 100 * scale.x;
@@ -315,8 +341,10 @@ public class BuildMap : MonoBehaviour
                     {
                         // spawn element
                         XmlElement spawnInsideElement = xml.CreateElement("Spawn");
-                        spawnInsideElement.SetAttribute("X", (gameObjwithSpawnComponent.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
-                        spawnInsideElement.SetAttribute("Y", (-gameObjwithSpawnComponent.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
+                        spawnInsideElement.SetAttribute("X",
+                            (gameObjwithSpawnComponent.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
+                        spawnInsideElement.SetAttribute("Y",
+                            (-gameObjwithSpawnComponent.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
                         spawnInsideElement.SetAttribute("Name", gameObjwithSpawnComponent.GetComponent<Spawn>().SpawnName);
                         spawnInsideElement.SetAttribute("Animation", gameObjwithSpawnComponent.GetComponent<Spawn>().SpawnAnimation);
                         contentElement.AppendChild(spawnInsideElement);
@@ -335,7 +363,7 @@ public class BuildMap : MonoBehaviour
             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
             {
 
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = spawnInScene.transform.localScale; // Get the GameObject scale
 
                 // Retrieve the image resolution of the sprite
@@ -363,7 +391,8 @@ public class BuildMap : MonoBehaviour
 
             float Frames = RespawnComponent.RespawnSecond * 60;
 
-            string[][] setVariables = {
+            string[][] setVariables =
+            {
                 new[] { "Name", "$Active", "Value", "1" },
                 new[] { "Name", "$Node", "Value", "COM" },
                 new[] { "Name", "Spawn", "Value", RespawnComponent.RespawnName },
@@ -599,7 +628,7 @@ public class BuildMap : MonoBehaviour
                 BD_element.SetAttribute("Y", (-bdInScene.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
                 BD_element.SetAttribute("ClassName", Regex.Replace(bdInScene.name, @" \((.*?)\)", string.Empty)); //Add a name
 
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = bdInScene.transform.localScale; // Get the GameObject scale
 
                 // Retrieve the image resolution of the sprite
@@ -636,7 +665,7 @@ public class BuildMap : MonoBehaviour
             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Image Size in Width and Height
             {
 
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = imageInScene.transform.localScale; // Get the GameObject scale
 
                 // Retrieve the image resolution of the sprite
@@ -660,7 +689,7 @@ public class BuildMap : MonoBehaviour
             // Check if the sprite image is flipped x,y or both
             if (spriteRenderer.flipX || spriteRenderer.flipY || (spriteRenderer.flipX && spriteRenderer.flipY))
             {
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = imageInScene.transform.localScale; // Get the GameObject scale
 
                 float width = bounds.size.x * 100 * scale.x;
@@ -773,7 +802,7 @@ public class BuildMap : MonoBehaviour
             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
             {
 
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = platformInScene.transform.localScale; // Get the GameObject scale
 
                 // Retrieve the image resolution of the sprite
@@ -838,7 +867,7 @@ public class BuildMap : MonoBehaviour
                 if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                 {
 
-                    Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                    Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                     Vector3 scale = triggerInScene.transform.localScale; // Get the GameObject scale
 
                     // Retrieve the image resolution of the sprite
@@ -878,7 +907,7 @@ public class BuildMap : MonoBehaviour
                 if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                 {
 
-                    Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                    Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                     Vector3 scale = triggerInScene.transform.localScale; // Get the GameObject scale
 
                     // Retrieve the image resolution of the sprite
@@ -940,7 +969,7 @@ public class BuildMap : MonoBehaviour
             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
             {
 
-                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                 Vector3 scale = areaInScene.transform.localScale; // Get the GameObject scale
 
                 // Retrieve the image resolution of the sprite
@@ -976,7 +1005,7 @@ public class BuildMap : MonoBehaviour
         {
             SpriteRenderer spriteRenderer = camInScene.GetComponent<SpriteRenderer>();
             CustomZoom customZoomValue = camInScene.GetComponent<CustomZoom>(); //Zoom value from object with tag "Camera" that have CustomZoom component
-            Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+            Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
             Vector3 scale = camInScene.transform.localScale; // Get the GameObject scale
             // Retrieve the image resolution of the sprite
             float width = bounds.size.x * 100;
@@ -1232,7 +1261,8 @@ public class BuildMap : MonoBehaviour
                     XmlElement objElement = xml.CreateElement("Object"); //Create a new node from scratch
                     objElement.SetAttribute("Name", Regex.Replace(childObject.name, @" \((.*?)\)", string.Empty)); //Add an name
                     objElement.SetAttribute("X", (childObject.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
-                    objElement.SetAttribute("Y", (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
+                    objElement.SetAttribute("Y",
+                        (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
                     contentElement.AppendChild(objElement);
                 }
             }
@@ -1246,7 +1276,7 @@ public class BuildMap : MonoBehaviour
                 if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Image Size in Width and Height
                 {
 
-                    Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                    Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                     Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                     // Retrieve the image resolution of the sprite
@@ -1270,7 +1300,7 @@ public class BuildMap : MonoBehaviour
                 // Check if the sprite image is flipped x,y or both
                 if (spriteRenderer.flipX || spriteRenderer.flipY || (spriteRenderer.flipX && spriteRenderer.flipY))
                 {
-                    Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                    Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                     Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                     float width = bounds.size.x * 100 * scale.x;
@@ -1317,7 +1347,8 @@ public class BuildMap : MonoBehaviour
             else if (childObject.gameObject.CompareTag("Platform"))
             {
                 //Platform
-                if (childObject.name != "trapezoid_type2" && childObject.name != "trapezoid_type1" && childObject.gameObject.CompareTag("Platform")) // Use a texture called "collision" which should come with this buildmap update folder.
+                if (childObject.name != "trapezoid_type2" && childObject.name != "trapezoid_type1" &&
+                    childObject.gameObject.CompareTag("Platform")) // Use a texture called "collision" which should come with this buildmap update folder.
                 {
                     XmlElement P_element = xml.CreateElement("Platform"); //Create a new node from scratch
                     P_element.SetAttribute("X", (childObject.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
@@ -1327,7 +1358,7 @@ public class BuildMap : MonoBehaviour
                     if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                     {
 
-                        Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                        Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                         Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                         // Retrieve the image resolution of the sprite
@@ -1377,7 +1408,7 @@ public class BuildMap : MonoBehaviour
                 if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                 {
 
-                    Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                    Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                     Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                     // Retrieve the image resolution of the sprite
@@ -1408,7 +1439,7 @@ public class BuildMap : MonoBehaviour
                     if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                     {
 
-                        Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                        Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                         Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                         // Retrieve the image resolution of the sprite
@@ -1512,13 +1543,14 @@ public class BuildMap : MonoBehaviour
                             TriggerSettings triggerSettings = childObject.GetComponent<TriggerSettings>(); //Trigger Settings.cs
                             T_element.SetAttribute("Name", Regex.Replace(childObject.name, @" \((.*?)\)", string.Empty)); //Add an name
                             T_element.SetAttribute("X", (childObject.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
-                            T_element.SetAttribute("Y", (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
+                            T_element.SetAttribute("Y",
+                                (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
 
                             SpriteRenderer spriteRenderer = childObject.GetComponent<SpriteRenderer>();
                             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                             {
 
-                                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                                 Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                                 // Retrieve the image resolution of the sprite
@@ -1551,13 +1583,14 @@ public class BuildMap : MonoBehaviour
                             XmlElement T_element = xml.CreateElement("Trigger"); //Create a new node from scratch
                             T_element.SetAttribute("Name", Regex.Replace(childObject.name, @" \((.*?)\)", string.Empty)); //Add an name
                             T_element.SetAttribute("X", (childObject.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
-                            T_element.SetAttribute("Y", (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
+                            T_element.SetAttribute("Y",
+                                (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
 
                             SpriteRenderer spriteRenderer = childObject.GetComponent<SpriteRenderer>();
                             if (spriteRenderer != null && spriteRenderer.sprite != null) //Get the Sprite Size in Width and Height
                             {
 
-                                Bounds bounds = spriteRenderer.sprite.bounds;// Get the bounds of the sprite
+                                Bounds bounds = spriteRenderer.sprite.bounds; // Get the bounds of the sprite
                                 Vector3 scale = childObject.transform.localScale; // Get the GameObject scale
 
                                 // Retrieve the image resolution of the sprite
@@ -1596,7 +1629,8 @@ public class BuildMap : MonoBehaviour
 
                     XmlElement Modelelement = xml.CreateElement("Model"); //Create a new node from scratch
                     Modelelement.SetAttribute("X", (childObject.transform.position.x * 100).ToString().Replace(',', '.')); //Add X position (Refit into the Vector units)
-                    Modelelement.SetAttribute("Y", (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
+                    Modelelement.SetAttribute("Y",
+                        (-childObject.transform.position.y * 100).ToString().Replace(',', '.')); // Add Y position (Negative because Vector see the world upside down)
                     Modelelement.SetAttribute("Type", modelProperties.Type.ToString()); //Add an name
                     Modelelement.SetAttribute("ClassName", Regex.Replace(childObject.name, @" \((.*?)\)", string.Empty)); //Add an name
 

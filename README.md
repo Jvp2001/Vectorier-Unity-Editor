@@ -37,8 +37,10 @@ A Discord server is open for the project : https://discord.com/invite/pVRuFBVwC2
 
 <h2> My Contribution </h2>
 <ul>
-<li> <b>Added a  Build Run Game</b> menu option (via the shortcut ctrl-shift-alt-R) </li>
+<li> Auto saves map before building.</li>
+<li> <b>Added a Build Run Game</b> menu option (via the shortcut ctrl-shift-alt-R). </li>
+<li> <b>Added a Run Game</b> menu option (via the shortcut ctrl-shift-R). </li>
 <li> Added a settings panel to let you define the <b>game directory</b> and optionally the <b>game executable</b> 
  <img src="https://github.com/Jvp2001/Vectorier-Unity-Editor/blob/main/Documentation/Images/SettingsPanel.png?raw=true">
 </li>
-<li> Also, all settings have tool tips.</li>
+<li> Also, all settings options have tooltips.</li>
