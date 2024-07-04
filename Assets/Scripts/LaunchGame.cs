@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -12,12 +13,13 @@ namespace DefaultNamespace
         {
 
 
-            string gameProcessPath = null;
+            string gameProcessPath = "";
 
 
 
-                var gamePath = VectorierSettings.GenerateGameExecutablePath();
-                if (string.IsNullOrEmpty(gamePath))
+                var gamePath = VectorierSettings.GameDirectory;
+                var gameExecutablePath = VectorierSettings.GameExecutablePath;
+                if (string.IsNullOrEmpty(gamePath) && string.IsNullOrEmpty(gameExecutablePath))
                 {
                     Debug.LogWarning("Game executable path is empty; defaulting to the \"steam://rungameid/248970\" path");
                     Debug.LogWarning("Please sett at least the GameDirectory in the Vectorier settings");
@@ -25,16 +27,30 @@ namespace DefaultNamespace
                 }
                 else
                 {
-                    gameProcessPath = gamePath;
+                    if(!string.IsNullOrEmpty(gamePath) && string.IsNullOrEmpty(gameExecutablePath))
+                    {
+                        gameProcessPath = VectorierSettings.GenerateGameExecutablePath();
+                    }
+                    else
+                    {
+                        gameProcessPath = gameExecutablePath;
+                    }
+
                 }
 
 
-            var gameProcess = new Process();
-            gameProcess.StartInfo.FileName = gameProcessPath;
-            gameProcess.Start();
+                try
+                {
+                    var gameProcess = new Process();
+                    gameProcess.StartInfo.FileName = gameProcessPath;
+                    gameProcess.Start();
 
-            gameProcess.WaitForExit();
-
+                    gameProcess.WaitForExit();
+                }
+                catch (Win32Exception) // This exception is thrown when the game executable is not found.
+                {
+                    Debug.LogError($"Cannot find game executable at path: {gamePath}!");
+                }
 
         }
     }

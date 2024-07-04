@@ -24,11 +24,16 @@ public static class VectorierSettings
 
 
 
+    /// <summary>
+    /// This generates the game executable path by combining the <see cref="GameDirectory"/> with the <see cref="GameExecutableName"/>
+    /// </summary>
+    /// <remarks>
+    /// <seealso cref="Path.Combine(string,string)"/>
+    /// </remarks>
+    /// <returns>< The path to the game executable./returns>
     public static string? GenerateGameExecutablePath()
     {
-        string? result = GameExecutablePath;
-        result ??= Path.Combine(GameDirectory ?? string.Empty, GameExecutableName);
-        return result == GameExecutableName ? null : result;
+      return Path.Combine(GameDirectory ?? string.Empty, GameExecutableName);
     }
 
 
