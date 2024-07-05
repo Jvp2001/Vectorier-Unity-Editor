@@ -15,7 +15,7 @@ public class BuildMap : MonoBehaviour
 
 
     // ReSharper disable once InconsistentNaming
-    internal string vectorFilePath => VectorierSettings.GameDirectory;
+    internal string vectorFilePath {get; set; } = VectorierSettings.GameDirectory;
 
 
 
