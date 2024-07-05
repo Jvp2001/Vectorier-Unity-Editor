@@ -12,9 +12,13 @@ using Debug = UnityEngine.Debug;
 public class BuildMap : MonoBehaviour
 {
 
-    [SerializeField]
-    [Tooltip("If this is empty, then it will try and use the GameDirectory property from the VectorierSettings asset.")]
-    private string vectorFilePath;
+
+
+    // ReSharper disable once InconsistentNaming
+    internal string vectorFilePath => VectorierSettings.GameDirectory;
+
+
+
 
     // Level Settings
     [Header("Level Settings")]
